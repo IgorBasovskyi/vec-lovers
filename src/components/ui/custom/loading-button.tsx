@@ -1,7 +1,6 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { VariantProps } from "class-variance-authority";
 import { Spinner } from "../spinner";
-import { CustomButton } from "./button";
 
 interface CustomButtonProps
   extends React.ComponentProps<"button">,
@@ -16,10 +15,10 @@ const LoadingButton = ({
   ...props
 }: CustomButtonProps) => {
   return (
-    <CustomButton disabled={loading || props.disabled} {...props}>
+    <Button disabled={loading || props.disabled} {...props}>
       {loading && <Spinner />}
       {children}
-    </CustomButton>
+    </Button>
   );
 };
 

@@ -1,9 +1,10 @@
 import { logoutAction } from "@/actions/auth/logout";
-import { CustomButton } from "@/components/ui/custom/button";
 
 const Logout = () => (
   <form action={logoutAction}>
-    <CustomButton>Log Out</CustomButton>
+    <button type="submit" className="w-full text-left">
+      Log Out
+    </button>
   </form>
 );
 

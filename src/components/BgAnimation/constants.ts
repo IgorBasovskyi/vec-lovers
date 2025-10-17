@@ -1,1 +1,1 @@
-export const PARTICLE_COUNT = 100;
+export const PARTICLE_COUNT = 50;

@@ -1,11 +1,11 @@
 import Container from "@/components/ui/custom/container";
 
-const DashboardPage = async () => {
+const MyCollectionsPage = () => {
   return (
     <section className="flex-1">
-      <Container>Dashboard</Container>
+      <Container>MyCollections</Container>
     </section>
   );
 };
 
-export default DashboardPage;
+export default MyCollectionsPage;

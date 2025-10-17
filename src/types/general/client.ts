@@ -7,4 +7,5 @@ export enum ROUTE {
   REGISTER = "/register",
   DASHBOARD = "/dashboard",
   LOGIN = "/login",
+  MY_COLLECTIONS = "/my-collections",
 }

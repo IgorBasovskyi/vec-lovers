@@ -1,9 +1,7 @@
 import { ROUTE } from "@/types/general/client";
-import { AuthLink } from "./types";
+import { NavLink } from "./types";
 
-export const publicLinks: AuthLink[] = [
-  { title: "Log In", href: ROUTE.LOGIN, variant: "outline" },
-  { title: "Sign Up", href: ROUTE.REGISTER, variant: "default" },
+export const navLinks: NavLink[] = [
+  { title: "Dashboard", href: ROUTE.DASHBOARD },
+  { title: "My Collections", href: ROUTE.MY_COLLECTIONS },
 ];
-
-export const protectedLinks: AuthLink[] = [];

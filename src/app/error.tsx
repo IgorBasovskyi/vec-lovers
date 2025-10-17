@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomButton } from "@/components/ui/custom/button";
+import { Button } from "@/components/ui/button";
 
 interface GlobalErrorProps {
   error: Error;
@@ -12,7 +12,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
     <div className="flex flex-1 items-center justify-center flex-col gap-4">
       <h1 className="text-2xl font-semibold">Something went wrong 😢</h1>
       <p>{error.message}</p>
-      <CustomButton onClick={() => reset()}>Try again</CustomButton>
+      <Button onClick={() => reset()}>Try again</Button>
     </div>
   );
 };

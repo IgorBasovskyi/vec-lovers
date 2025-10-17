@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CustomButton } from "@/components/ui/custom/button";
+import { Button } from "@/components/ui/button";
 import { ROUTE } from "@/types/general/client";
 
 const HomePage = () => {
@@ -13,9 +13,9 @@ const HomePage = () => {
           Your ultimate space to save, explore, and manage your favorite SVG
           icons.
         </p>
-        <CustomButton asChild>
+        <Button asChild>
           <Link href={ROUTE.REGISTER}>Get Started</Link>
-        </CustomButton>
+        </Button>
       </div>
     </section>
   );

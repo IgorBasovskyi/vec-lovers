@@ -1,29 +1,38 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { PROTECTED_ROUTES, PUBLIC_ROUTES } from "./constants/general";
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { decrypt } from "./utils/auth/server";
+import {
+  COOKIE_NAME,
+  PROTECTED_ROUTES,
+  PUBLIC_ROUTES,
+} from "./constants/general";
 import { ROUTE } from "./types/general/client";
 
-export const middleware = (req: NextRequest) => {
-  const token = req.cookies.get("token")?.value;
+const middleware = async (req: NextRequest) => {
   const path = req.nextUrl.pathname;
+  const isProtectedRoute = PROTECTED_ROUTES.includes(path as ROUTE);
+  const isPublicRoute = PUBLIC_ROUTES.includes(path as ROUTE);
 
-  const matchesRoute = (routeList: string[]) =>
-    routeList.some((r) => path === r || path.startsWith(`${r}/`));
+  const cookie = (await cookies()).get(COOKIE_NAME)?.value;
+  const session = await decrypt(cookie);
 
-  const isPublic = matchesRoute(PUBLIC_ROUTES);
-  const isProtected = matchesRoute(PROTECTED_ROUTES);
-
-  if (!token && isProtected) {
-    return NextResponse.redirect(new URL(ROUTE.LOGIN, req.url));
+  if (isProtectedRoute && !session?.userId) {
+    return NextResponse.redirect(new URL(ROUTE.LOGIN, req.nextUrl));
   }
 
-  if (token && isPublic) {
-    return NextResponse.redirect(new URL(ROUTE.DASHBOARD, req.url));
+  if (
+    isPublicRoute &&
+    session?.userId &&
+    !req.nextUrl.pathname.startsWith(ROUTE.DASHBOARD)
+  ) {
+    return NextResponse.redirect(new URL(ROUTE.DASHBOARD, req.nextUrl));
   }
 
   return NextResponse.next();
 };
 
+export default middleware;
+
 export const config = {
-  matcher: ["/", "/login", "/register", "/dashboard/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };
