@@ -5,3 +5,5 @@ export const BASE_URL = "api/";
 export const PROTECTED_ROUTES = [ROUTE.DASHBOARD];
 
 export const PUBLIC_ROUTES = [ROUTE.HOME, ROUTE.LOGIN, ROUTE.REGISTER];
+
+export const COOKIE_NAME = "session";

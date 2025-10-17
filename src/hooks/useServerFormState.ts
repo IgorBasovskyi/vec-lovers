@@ -20,7 +20,7 @@ export function useServerFormState<FormValues extends FieldValues>(
       });
     }
 
-    if (state.type === "server" && state.message) {
+    if (state.type === "error" && state.message) {
       form.setError("root", { message: state.message });
     }
   }, [state, form]);

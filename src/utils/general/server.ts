@@ -14,8 +14,6 @@ export const isValidationError = (error: unknown): error is ValidationError => {
   return error instanceof ValidationError;
 };
 
-// TODO: try to apply specific types
-
 export const createValidationError = (
   fields: IValidationError["fields"]
 ): IValidationError => {

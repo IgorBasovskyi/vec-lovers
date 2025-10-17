@@ -1,18 +1,24 @@
-import Link from "next/link";
-import { CustomButton } from "@/components/ui/custom/button";
-import { protectedLinks, publicLinks } from "./common";
+import { navLinks } from "./common";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "../ui/navigation-menu";
+import CustomNavigationMenuLink from "../ui/custom/nav-link";
 
-const DesktopNav = ({ authenticated }: { authenticated: boolean }) => {
-  const links = authenticated ? protectedLinks : publicLinks;
-
+const DesktopNav = () => {
   return (
-    <div className="hidden md:flex items-center space-x-2">
-      {links.map((link) => (
-        <CustomButton key={link.href} variant={link.variant} asChild>
-          <Link href={link.href}>{link.title}</Link>
-        </CustomButton>
-      ))}
-    </div>
+    <NavigationMenu className="hidden md:flex">
+      <NavigationMenuList>
+        {navLinks.map((link) => (
+          <NavigationMenuItem key={link.href}>
+            <CustomNavigationMenuLink href={link.href}>
+              {link.title}
+            </CustomNavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 };
 
