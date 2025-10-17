@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { LoadingButton } from "@/components/ui/custom/loading-button";
 import { getFormSettings } from "@/utils/yup/client";
 import { objectToFormData } from "@/utils/general/client";
-import { registerAction } from "@/actions/auth/register";
+import { registerAction } from "@/actions/auth/register/register";
 import { useServerFormState } from "@/hooks/useServerFormState";
 import { useServerRedirect } from "@/hooks/useServerRedirect";
 import { useToast } from "@/hooks/useToast";

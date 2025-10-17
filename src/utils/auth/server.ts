@@ -1,5 +1,3 @@
-import "server-only";
-
 import { compare, hash } from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

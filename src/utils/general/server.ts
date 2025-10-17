@@ -1,5 +1,4 @@
-import { IValidationError } from "@/types/auth/server";
-import { IServerError } from "@/types/general/server";
+import { IServerError, IValidationError } from "@/types/general/server";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { ValidationError } from "yup";
 

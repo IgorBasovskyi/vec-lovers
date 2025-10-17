@@ -25,6 +25,8 @@ export const registerAction = async (
     ["username", "email", "password", "confirmPassword"]
   );
 
+  const normalizedEmail = email.trim().toLowerCase();
+
   try {
     await registerSchema.validate(
       { username, email, password, confirmPassword },
@@ -32,12 +34,17 @@ export const registerAction = async (
     );
   } catch (error) {
     if (isValidationError(error)) {
-      const fields: Partial<Record<Fields, string>> = {};
-
-      for (const item of error.inner) {
-        const path = item.path as Fields;
-        if (path) fields[path] = item.message;
-      }
+      const fields = error.inner.reduce(
+        (
+          acc: Partial<Record<Fields, string>>,
+          item: { path?: string; message: string }
+        ) => {
+          const path = item.path as Fields | undefined;
+          if (path) acc[path] = item.message;
+          return acc;
+        },
+        {}
+      );
 
       return createValidationError(fields);
     }
@@ -47,7 +54,7 @@ export const registerAction = async (
 
   try {
     const existingUser = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: normalizedEmail },
     });
 
     if (existingUser) {
@@ -61,7 +68,7 @@ export const registerAction = async (
     await prisma.user.create({
       data: {
         username,
-        email: email.toLowerCase(),
+        email: normalizedEmail,
         password: hashedPassword,
       },
     });

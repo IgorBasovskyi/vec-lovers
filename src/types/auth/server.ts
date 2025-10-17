@@ -1,10 +1,4 @@
-import { IServerError } from "../general/server";
-
-export interface IValidationError {
-  fields: Record<string, string>;
-  type: "validation";
-  message?: string;
-}
+import { IServerError, IValidationError } from "../general/server";
 
 export interface ISuccess {
   redirectTo: string;

@@ -13,12 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { LoadingButton } from "@/components/ui/custom/loading-button";
-import { loginAction } from "@/actions/auth/login";
+import { loginAction } from "@/actions/auth/login/login";
 import { getFormSettings } from "@/utils/yup/client";
 import { objectToFormData } from "@/utils/general/client";
 import { loginSchema } from "@/schemas/userSchema";
 import { useServerFormState } from "@/hooks/useServerFormState";
-import { useServerRedirect } from "@/hooks/useServerRedirect";
 import { useToast } from "@/hooks/useToast";
 import type { TState } from "@/types/auth/server";
 import type { InferType } from "yup";
@@ -46,8 +45,6 @@ const LoginForm = () => {
   useServerFormState(state, form);
 
   useToast(state);
-
-  useServerRedirect(state);
 
   return (
     <Form {...form}>
