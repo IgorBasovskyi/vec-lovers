@@ -6,20 +6,18 @@ import {
 } from "../ui/navigation-menu";
 import CustomNavigationMenuLink from "../ui/custom/nav-link";
 
-const DesktopNav = () => {
-  return (
-    <NavigationMenu className="hidden md:flex">
-      <NavigationMenuList>
-        {navLinks.map((link) => (
-          <NavigationMenuItem key={link.href}>
-            <CustomNavigationMenuLink href={link.href}>
-              {link.title}
-            </CustomNavigationMenuLink>
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
-};
+const DesktopNav = () => (
+  <NavigationMenu className="hidden md:flex">
+    <NavigationMenuList>
+      {navLinks.map((link) => (
+        <NavigationMenuItem key={link.href}>
+          <CustomNavigationMenuLink href={link.href}>
+            {link.title}
+          </CustomNavigationMenuLink>
+        </NavigationMenuItem>
+      ))}
+    </NavigationMenuList>
+  </NavigationMenu>
+);
 
 export default DesktopNav;

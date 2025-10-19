@@ -1,9 +1,7 @@
-export interface ICredentials {
-  email: string;
-  password: string;
-}
+import { loginSchema } from "@/schemas/auth/loginSchema";
+import { registerSchema } from "@/schemas/auth/registerSchema";
+import { InferType } from "yup";
 
-export interface IRegistrationDetails extends ICredentials {
-  username: string;
-  confirmPassword: string;
-}
+export type LoginFormValues = InferType<typeof loginSchema>;
+
+export type RegisterFormValues = InferType<typeof registerSchema>;

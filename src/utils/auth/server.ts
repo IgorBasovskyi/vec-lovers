@@ -1,5 +1,3 @@
-import "server-only";
-
 import { compare, hash } from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -56,7 +54,7 @@ export const createSession = async (userId: string) => {
 };
 
 export const verifySession = async (): Promise<ISession> => {
-  const cookie = (await cookies()).get("session")?.value;
+  const cookie = (await cookies()).get(COOKIE_NAME)?.value;
   const session = cookie
     ? ((await decrypt(cookie)) as SessionPayload | null)
     : null;

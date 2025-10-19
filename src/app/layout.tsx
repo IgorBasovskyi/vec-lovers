@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/sonner";
 import ThemeProvider from "../components/ThemeProvider";
 import Header from "@/components/Header";
 import BgAnimation from "@/components/BgAnimation";
-import ReduxProvider from "@/components/ReduxProvider";
 import { LayoutProps } from "@/types/general/client";
 
 import "./globals.css";
@@ -37,14 +36,12 @@ const RootLayout = async ({ children }: LayoutProps) => {
           enableSystem
           disableTransitionOnChange
         >
-          <ReduxProvider>
-            <Toaster position="top-center" richColors />
-            <Header />
-            <main className="flex min-h-[calc(100dvh-150px)] mt-[70px] relative overflow-x-hidden py-10">
-              <BgAnimation />
-              {children}
-            </main>
-          </ReduxProvider>
+          <Toaster position="top-center" richColors />
+          <Header />
+          <main className="flex min-h-[calc(100dvh-150px)] mt-[70px] relative overflow-x-hidden py-10">
+            <BgAnimation />
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>

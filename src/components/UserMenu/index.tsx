@@ -8,8 +8,9 @@ import {
 import Link from "next/link";
 import Logout from "../Auth/Logout";
 import { Button } from "../ui/button";
-import { getUser, IUser } from "@/actions/user/getUser";
+import { getUser } from "@/actions/user/getUser";
 import { IServerError } from "@/types/general/server";
+import { IUser } from "@/types/user/general";
 
 const UserMenu = async () => {
   const response: IUser | IServerError = await getUser();

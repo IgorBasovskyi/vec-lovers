@@ -9,38 +9,48 @@ export const useGenerateParticles = () => {
   const stageRef = useRef<Konva.Stage>(null);
   const layerRef = useRef<Konva.Layer>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const animRef = useRef<Konva.Animation>(null);
 
   useEffect(() => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const layer = layerRef.current;
+    if (!layer) return;
 
-    const particles: Particle[] = Array.from(
-      { length: PARTICLE_COUNT },
-      () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
-      })
-    );
+    // Only generate particles once
+    if (particlesRef.current.length === 0) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
-    const layer = layerRef.current!;
-    particles.forEach((p) => {
-      const circle = new Konva.Circle({
-        x: p.x,
-        y: p.y,
-        radius: p.r,
-        fill: pick({ light: "#000", dark: "#fff" }),
+      const particles: Particle[] = Array.from(
+        { length: PARTICLE_COUNT },
+        () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: (Math.random() - 0.5) * 0.5,
+        })
+      );
+
+      particles.forEach((p) => {
+        const circle = new Konva.Circle({
+          x: p.x,
+          y: p.y,
+          radius: p.r,
+          fill: pick({ light: "#000", dark: "#fff" }),
+        });
+        p.node = circle;
+        layer.add(circle);
       });
-      p.node = circle;
-      layer.add(circle);
-    });
 
-    particlesRef.current = particles;
-    layer.draw();
+      particlesRef.current = particles;
+      layer.draw();
+    }
 
-    const anim = new Konva.Animation(() => {
+    // Start animation
+    animRef.current = new Konva.Animation(() => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
       particlesRef.current.forEach((p) => {
         p.x += p.dx;
         p.y += p.dy;
@@ -53,10 +63,10 @@ export const useGenerateParticles = () => {
       });
     }, layer);
 
-    anim.start();
+    animRef.current.start();
 
     return () => {
-      anim.stop();
+      animRef.current?.stop();
     };
   }, [pick]);
 

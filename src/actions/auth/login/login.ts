@@ -7,13 +7,12 @@ import {
   isValidationError,
 } from "@/utils/general/server";
 import { createSession, verifyPassword } from "@/utils/auth/server";
-import { loginSchema } from "@/schemas/userSchema";
-import { TState } from "@/types/auth/server";
+import { TState } from "@/types/general/server";
 import { ROUTE } from "@/types/general/client";
 import { getFormFields } from "@/utils/general";
 import { redirect } from "next/navigation";
-
-type Fields = "email" | "password";
+import { loginSchema } from "@/schemas/auth/loginSchema";
+import { LoginFields } from "@/types/auth/server";
 
 export const loginAction = async (
   _initialState: TState,
@@ -25,10 +24,10 @@ export const loginAction = async (
     await loginSchema.validate({ email, password }, { abortEarly: false });
   } catch (error) {
     if (isValidationError(error)) {
-      const fields: Partial<Record<Fields, string>> = {};
+      const fields: Partial<Record<LoginFields, string>> = {};
 
       for (const item of error.inner) {
-        const path = item.path as Fields;
+        const path = item.path as LoginFields;
         if (path) fields[path] = item.message;
       }
 
