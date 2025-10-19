@@ -22,8 +22,3 @@ export const registerSchema = yup.object({
     .oneOf([yup.ref("password")], "Passwords do not match.")
     .required("Please confirm your password."),
 });
-
-export const loginSchema = yup.object({
-  email: yup.string().email("Invalid Email").required("Email is required."),
-  password: yup.string().required("Password is required."),
-});

@@ -1,4 +1,4 @@
-import { logoutAction } from "@/actions/auth/logout";
+import { logoutAction } from "@/actions/auth/logout/logout";
 
 const Logout = () => (
   <form action={logoutAction}>

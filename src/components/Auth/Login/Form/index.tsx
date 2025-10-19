@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useTransition } from "react";
+import { useActionState, useCallback, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -16,31 +16,31 @@ import { LoadingButton } from "@/components/ui/custom/loading-button";
 import { loginAction } from "@/actions/auth/login/login";
 import { getFormSettings } from "@/utils/yup/client";
 import { objectToFormData } from "@/utils/general/client";
-import { loginSchema } from "@/schemas/userSchema";
 import { useServerFormState } from "@/hooks/useServerFormState";
 import { useToast } from "@/hooks/useToast";
-import type { TState } from "@/types/auth/server";
-import type { InferType } from "yup";
-
-type LoginFormValues = InferType<typeof loginSchema>;
-
-const DEFAULT_VALUES: LoginFormValues = {
-  email: "",
-  password: "",
-};
+import type { TState } from "@/types/general/server";
+import { loginSchema } from "@/schemas/auth/loginSchema";
+import { LOGIN_DEFAULT_VALUES } from "@/constants/auth/client";
+import { LoginFormValues } from "@/types/auth/client";
 
 const LoginForm = () => {
   const [state, action] = useActionState<TState, FormData>(loginAction, null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<LoginFormValues>(
-    getFormSettings({ schema: loginSchema, defaultValues: DEFAULT_VALUES })
+    getFormSettings({
+      schema: loginSchema,
+      defaultValues: LOGIN_DEFAULT_VALUES,
+    })
   );
 
-  const onSubmit = (data: LoginFormValues) => {
-    const formData = objectToFormData(data);
-    startTransition(() => action(formData));
-  };
+  const onSubmit = useCallback(
+    async (data: LoginFormValues) => {
+      const formData = objectToFormData(data);
+      startTransition(() => action(formData));
+    },
+    [action, startTransition]
+  );
 
   useServerFormState(state, form);
 

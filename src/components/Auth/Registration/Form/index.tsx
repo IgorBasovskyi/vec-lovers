@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useTransition } from "react";
+import { useActionState, useCallback, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -17,21 +17,11 @@ import { getFormSettings } from "@/utils/yup/client";
 import { objectToFormData } from "@/utils/general/client";
 import { registerAction } from "@/actions/auth/register/register";
 import { useServerFormState } from "@/hooks/useServerFormState";
-import { useServerRedirect } from "@/hooks/useServerRedirect";
 import { useToast } from "@/hooks/useToast";
-import { registerSchema } from "@/schemas/userSchema";
-import { InferType } from "yup";
-import { TState } from "@/types/auth/server";
-import { IRegistrationDetails } from "@/types/auth/client";
-
-type RegisterFormValues = InferType<typeof registerSchema>;
-
-const DEFAULT_VALUES: RegisterFormValues = {
-  username: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
+import { TState } from "@/types/general/server";
+import { registerSchema } from "@/schemas/auth/registerSchema";
+import { RegisterFormValues } from "@/types/auth/client";
+import { REGISTRATION_DEFAULT_VALUES } from "@/constants/auth/client";
 
 const RegisterForm = () => {
   const [state, action] = useActionState<TState, FormData>(
@@ -41,19 +31,23 @@ const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<RegisterFormValues>(
-    getFormSettings({ schema: registerSchema, defaultValues: DEFAULT_VALUES })
+    getFormSettings({
+      schema: registerSchema,
+      defaultValues: REGISTRATION_DEFAULT_VALUES,
+    })
   );
 
-  const onSubmit = async (data: IRegistrationDetails) => {
-    const formData = objectToFormData(data);
-    startTransition(() => action(formData));
-  };
+  const onSubmit = useCallback(
+    async (data: RegisterFormValues) => {
+      const formData = objectToFormData(data);
+      startTransition(() => action(formData));
+    },
+    [action, startTransition]
+  );
 
   useServerFormState(state, form);
 
   useToast(state);
-
-  useServerRedirect(state);
 
   return (
     <Form {...form}>

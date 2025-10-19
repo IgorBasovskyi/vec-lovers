@@ -11,8 +11,8 @@ interface ThemeProviderProps {
   disableTransitionOnChange: boolean;
 }
 
-const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-};
+const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => (
+  <NextThemesProvider {...props}>{children}</NextThemesProvider>
+);
 
 export default ThemeProvider;

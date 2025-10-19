@@ -5,12 +5,7 @@ import { verifySession } from "@/utils/auth/server";
 import { createServerError } from "@/utils/general/server";
 import { redirect } from "next/navigation";
 import { IServerError } from "@/types/general/server";
-
-export interface IUser {
-  id: string;
-  username: string;
-  email: string;
-}
+import { IUser } from "@/types/user/general";
 
 export const getUser = async (): Promise<IUser | IServerError> => {
   const session = await verifySession();

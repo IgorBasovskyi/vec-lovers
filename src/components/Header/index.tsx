@@ -4,7 +4,7 @@ import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import UserMenu from "../UserMenu";
 import ModeToggle from "./ModeToggle";
-import AuthButtons from "./AuthButtons";
+import AuthLinks from "../Auth/Links";
 import { verifySession } from "@/utils/auth/server";
 
 const Header = async () => {
@@ -20,7 +20,7 @@ const Header = async () => {
         <div className="flex items-center gap-2">
           {isAuth && <MobileNav />}
           {isAuth && <UserMenu />}
-          {!isAuth && <AuthButtons />}
+          {!isAuth && <AuthLinks />}
           <ModeToggle />
         </div>
       </Container>

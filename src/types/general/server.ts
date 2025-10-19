@@ -8,3 +8,15 @@ export interface IValidationError {
   type: "validation";
   message?: string;
 }
+
+export interface ISuccess {
+  type: "success";
+  message?: string;
+}
+
+export type TState =
+  | IValidationError
+  | IServerError
+  | ISuccess
+  | null
+  | undefined;

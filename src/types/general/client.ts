@@ -8,4 +8,5 @@ export enum ROUTE {
   DASHBOARD = "/dashboard",
   LOGIN = "/login",
   MY_COLLECTIONS = "/my-collections",
+  ADD_ICON = "/add-icon",
 }

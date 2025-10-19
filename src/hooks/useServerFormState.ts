@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
-import type { TState } from "@/types/auth/server";
+import type { TState } from "@/types/general/server";
 
 export function useServerFormState<FormValues extends FieldValues>(
   state: TState | null,
