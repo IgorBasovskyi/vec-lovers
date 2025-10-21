@@ -14,6 +14,7 @@ import { addIconSchema } from "@/schemas/addIconSchema";
 import { IconFields } from "@/types/icon/server";
 import { verifySession } from "@/utils/auth/server";
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 export const addIconAction = async (
   _initialState: TState,
@@ -66,6 +67,9 @@ export const addIconAction = async (
         userId: session.userId,
       },
     });
+
+    // Invalidate the icons cache to show the new icon immediately
+    revalidateTag("icons");
 
     return createSuccessMessage("Icon added successfully!");
   } catch (err) {

@@ -1,6 +1,6 @@
 import { LoginFormValues, RegisterFormValues } from "@/types/auth/client";
 
-export const COMMON_FIELDS = {
+const COMMON_FIELDS = {
   email: "",
   password: "",
 };

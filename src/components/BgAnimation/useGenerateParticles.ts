@@ -70,5 +70,18 @@ export const useGenerateParticles = () => {
     };
   }, [pick]);
 
+  useEffect(() => {
+    const layer = layerRef.current;
+    if (!layer) return;
+
+    particlesRef.current.forEach((p) => {
+      if (p.node) {
+        p.node.fill(pick({ light: "#000", dark: "#fff" }));
+      }
+    });
+
+    layer.draw();
+  }, [pick]); // runs whenever the theme changes
+
   return { stageRef, layerRef };
 };
