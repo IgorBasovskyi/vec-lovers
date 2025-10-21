@@ -1,11 +1,13 @@
+import { TUserId } from "../general";
+
 export type SessionPayload = {
-  userId: string;
+  userId: TUserId;
   expiresAt: Date;
 };
 
 export interface ISession {
   isAuth: boolean;
-  userId?: string;
+  userId?: TUserId;
 }
 
 export type LoginFields = "email" | "password";

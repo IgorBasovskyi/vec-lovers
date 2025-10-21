@@ -14,6 +14,8 @@ export interface ISuccess {
   message?: string;
 }
 
+export type TServerResponse = IValidationError | IServerError | ISuccess;
+
 export type TState =
   | IValidationError
   | IServerError
