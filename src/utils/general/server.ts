@@ -1,4 +1,4 @@
-import { ISuccess } from "@/types/general/server";
+import { ISuccess, TServerResponse } from "@/types/general/server";
 import { IServerError, IValidationError } from "@/types/general/server";
 import {
   PrismaClientKnownRequestError,
@@ -38,7 +38,7 @@ export const createValidationError = (
 export const handlePrismaError = <T extends string = string>(
   err: unknown,
   fieldMap?: Record<string, T>
-): IValidationError | IServerError => {
+): TServerResponse => {
   // Quick check: if it's not a Prisma error, return generic server error immediately
   if (
     !(err instanceof PrismaClientKnownRequestError) &&
