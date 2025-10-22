@@ -52,7 +52,7 @@ export const handlePrismaError = <T extends string = string>(
   // Handle Prisma known request errors
   if (err instanceof PrismaClientKnownRequestError) {
     switch (err.code) {
-      case "P2002":
+      case "P2002": {
         // Unique constraint violation - use existing logic
         const target = err.meta?.target;
         const fieldKey = Array.isArray(target) ? target[0] : target ?? "field";
@@ -61,6 +61,7 @@ export const handlePrismaError = <T extends string = string>(
         return createValidationError({
           [mappedField]: `This ${mappedField} is already taken`,
         } as Record<string, string>);
+      }
 
       case "P2003":
         // Foreign key constraint violation

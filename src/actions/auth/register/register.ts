@@ -77,4 +77,10 @@ export const registerAction = async (
     });
     redirect(`${ROUTE.LOGIN}?${params.toString()}`);
   }
+
+  // This should never be reached due to redirect above, but TypeScript needs it
+  return {
+    type: "error",
+    message: "Unexpected error occurred",
+  };
 };

@@ -81,6 +81,8 @@ export const updateSession = async () => {
     sameSite: "lax",
     path: ROUTE.HOME,
   });
+
+  return payload;
 };
 
 export const deleteSession = async () => {
