@@ -81,7 +81,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js app
+      - name: Build and upload Next.js app
         run: |
           echo "Building Next.js app..."
           npm run ci:build
@@ -94,8 +94,30 @@ jobs:
             ls -la .next
             echo "File count: $(find .next -type f | wc -l)"
             echo "Directory size: $(du -sh .next)"
+            
+            # Create a tarball to ensure we capture everything
+            echo "Creating build archive..."
+            tar -czf build-files.tar.gz .next
+            echo "Archive created: $(ls -la build-files.tar.gz)"
           else
             echo "❌ Build failed: .next directory not found"
+            echo "Available files:"
+            ls -la
+            exit 1
+          fi
+
+      - name: Pre-upload verification
+        run: |
+          echo "Pre-upload verification..."
+          echo "Current directory: $(pwd)"
+          echo "Checking .next directory exists:"
+          if [ -d ".next" ]; then
+            echo "✅ .next directory exists"
+            echo "Contents:"
+            ls -la .next
+            echo "File count: $(find .next -type f | wc -l)"
+          else
+            echo "❌ .next directory missing before upload"
             echo "Available files:"
             ls -la
             exit 1
@@ -109,23 +131,10 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-      - name: Upload build artifacts (fallback)
-        if: failure()
+      - name: Upload build archive
         uses: actions/upload-artifact@v4
         with:
-          name: build-files-fallback
-          path: .
-          retention-days: 7
-          if-no-files-found: warn
-
-      - name: Upload build artifacts (debug)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files-debug
-          path: |
-            .next
-            package.json
-            next.config.ts
+          name: build-archive
+          path: build-files.tar.gz
           retention-days: 7
           if-no-files-found: warn
