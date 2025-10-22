@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Download } from "lucide-react";
-import { Button } from "../ui/button";
+import { Download } from 'lucide-react';
+import { Button } from '../ui/button';
 
 interface DownloadButtonProps {
   svgIcon: string | React.ReactNode;
@@ -10,17 +10,16 @@ interface DownloadButtonProps {
 
 const DownloadButton = ({ svgIcon, title }: DownloadButtonProps) => {
   const handleDownload = () => {
-    if (typeof svgIcon === "string") {
-      const blob = new Blob([svgIcon], { type: "image/svg+xml" });
+    if (typeof svgIcon === 'string') {
+      const blob = new Blob([svgIcon], { type: 'image/svg+xml' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = `${title}.svg`;
       a.click();
       URL.revokeObjectURL(url);
-    } else {
-      console.warn("Download only works for SVG string content");
     }
+    // Note: Download only works for SVG string content
   };
 
   return (

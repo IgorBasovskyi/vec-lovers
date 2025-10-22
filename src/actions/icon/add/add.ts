@@ -1,20 +1,20 @@
-"use server";
+'use server';
 
-import prisma from "@/utils/prisma";
+import prisma from '@/utils/prisma';
 import {
   createServerError,
   createSuccessMessage,
   createValidationError,
   handlePrismaError,
   isValidationError,
-} from "@/utils/general/server";
-import { TState } from "@/types/general/server";
-import { getFormFields } from "@/utils/general";
-import { addIconSchema } from "@/schemas/addIconSchema";
-import { IconFields } from "@/types/icon/server";
-import { verifySession } from "@/utils/auth/server";
-import { redirect } from "next/navigation";
-import { revalidateTag } from "next/cache";
+} from '@/utils/general/server';
+import { TState } from '@/types/general/server';
+import { getFormFields } from '@/utils/general';
+import { addIconSchema } from '@/schemas/addIconSchema';
+import { IconFields } from '@/types/icon/server';
+import { verifySession } from '@/utils/auth/server';
+import { redirect } from 'next/navigation';
+import { revalidateTag } from 'next/cache';
 
 export const addIconAction = async (
   _initialState: TState,
@@ -23,14 +23,14 @@ export const addIconAction = async (
   const session = await verifySession();
 
   if (!session || !session.userId) {
-    redirect("/login");
+    redirect('/login');
   }
 
   const { title, description, svgIcon, category } = getFormFields(formData, [
-    "title",
-    "description",
-    "svgIcon",
-    "category",
+    'title',
+    'description',
+    'svgIcon',
+    'category',
   ]);
 
   try {
@@ -69,14 +69,13 @@ export const addIconAction = async (
     });
 
     // Invalidate the icons cache to show the new icon immediately
-    revalidateTag("icons");
+    revalidateTag('icons');
 
-    return createSuccessMessage("Icon added successfully!");
+    return createSuccessMessage('Icon added successfully!');
   } catch (err) {
-    console.error("Error adding icon:", err);
     return handlePrismaError<IconFields>(err, {
-      Icon_title_key: "title",
-      Icon_svgIcon_key: "svgIcon",
+      Icon_title_key: 'title',
+      Icon_svgIcon_key: 'svgIcon',
     });
   }
 };

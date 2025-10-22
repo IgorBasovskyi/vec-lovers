@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import prisma from "@/utils/prisma";
+import prisma from '@/utils/prisma';
 import {
   createServerError,
   createValidationError,
   handlePrismaError,
   isValidationError,
-} from "@/utils/general/server";
-import { TState } from "@/types/general/server";
-import { ROUTE } from "@/types/general/client";
-import { hashPassword } from "@/utils/auth/server";
-import { getFormFields } from "@/utils/general";
-import { redirect } from "next/navigation";
-import { registerSchema } from "@/schemas/auth/registerSchema";
-import { RegisterFields } from "@/types/auth/server";
+} from '@/utils/general/server';
+import { TState } from '@/types/general/server';
+import { ROUTE } from '@/types/general/client';
+import { hashPassword } from '@/utils/auth/server';
+import { getFormFields } from '@/utils/general';
+import { redirect } from 'next/navigation';
+import { registerSchema } from '@/schemas/auth/registerSchema';
+import { RegisterFields } from '@/types/auth/server';
 
 export const registerAction = async (
   _initialState: TState,
@@ -22,7 +22,7 @@ export const registerAction = async (
   let user;
   const { username, email, password, confirmPassword } = getFormFields(
     formData,
-    ["username", "email", "password", "confirmPassword"]
+    ['username', 'email', 'password', 'confirmPassword']
   );
 
   const normalizedEmail = email.trim().toLowerCase();
@@ -63,24 +63,23 @@ export const registerAction = async (
       },
     });
   } catch (err) {
-    console.error(err);
     return handlePrismaError<RegisterFields>(err, {
-      User_email_key: "email",
-      User_username_key: "username",
+      User_email_key: 'email',
+      User_username_key: 'username',
     });
   }
 
   if (user) {
     const params = new URLSearchParams({
-      type: "success",
-      message: "Account created successfully!",
+      type: 'success',
+      message: 'Account created successfully!',
     });
     redirect(`${ROUTE.LOGIN}?${params.toString()}`);
   }
 
   // This should never be reached due to redirect above, but TypeScript needs it
   return {
-    type: "error",
-    message: "Unexpected error occurred",
+    type: 'error',
+    message: 'Unexpected error occurred',
   };
 };

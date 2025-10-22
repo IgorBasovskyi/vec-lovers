@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Check, Copy } from "lucide-react";
-import { Button } from "../ui/button";
+import { Check, Copy } from 'lucide-react';
+import { Button } from '../ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
-import { useState } from "react";
+} from '../ui/tooltip';
+import { useState } from 'react';
 
 interface CopyButtonProps {
   svgIcon: string | React.ReactNode;
@@ -18,13 +18,12 @@ const CopyButton = ({ svgIcon }: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    if (typeof svgIcon === "string") {
+    if (typeof svgIcon === 'string') {
       await navigator.clipboard.writeText(svgIcon);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } else {
-      console.warn("Cannot copy non-string SVG directly");
     }
+    // Note: Non-string SVG content cannot be copied directly
   };
 
   return (

@@ -17,12 +17,12 @@
     "ci:lint": "eslint . --max-warnings=10 --format=json --output-file=eslint-report.json",
     "ci:typecheck": "tsc --noEmit --pretty",
     "ci:test": "vitest run --reporter=json --outputFile=test-results.json",
-    "ci:build": "next build --turbopack",
+    "ci:build": "next build --turbopack --no-lint",
     "ci:validate": "npm run ci:lint && npm run ci:typecheck && npm run ci:test && npm run ci:build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "npm run db:generate",
-    "postinstall": "husky install"
+    "prepare": "husky install",
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

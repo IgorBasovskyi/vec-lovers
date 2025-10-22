@@ -1,17 +1,17 @@
-"use server";
+'use server';
 
-import prisma from "@/utils/prisma";
-import { verifySession } from "@/utils/auth/server";
-import { createServerError } from "@/utils/general/server";
-import { redirect } from "next/navigation";
-import { IServerError } from "@/types/general/server";
-import { IUser } from "@/types/user/general";
+import prisma from '@/utils/prisma';
+import { verifySession } from '@/utils/auth/server';
+import { createServerError } from '@/utils/general/server';
+import { redirect } from 'next/navigation';
+import { IServerError } from '@/types/general/server';
+import { IUser } from '@/types/user/general';
 
 export const getUser = async (): Promise<IUser | IServerError> => {
   const session = await verifySession();
 
   if (!session) {
-    redirect("/login");
+    redirect('/login');
   }
 
   try {
@@ -21,12 +21,11 @@ export const getUser = async (): Promise<IUser | IServerError> => {
     });
 
     if (!user) {
-      return createServerError("User not found");
+      return createServerError('User not found');
     }
 
     return user;
-  } catch (error) {
-    console.error("Internal server error:", error);
+  } catch (_error) {
     return createServerError();
   }
 };
