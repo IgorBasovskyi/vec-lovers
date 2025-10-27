@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useActionState, useCallback, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useActionState, useCallback, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -9,19 +9,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { LoadingButton } from "@/components/ui/custom/loading-button";
-import { getFormSettings } from "@/utils/yup/client";
-import { objectToFormData } from "@/utils/general/client";
-import { registerAction } from "@/actions/auth/register/register";
-import { useServerFormState } from "@/hooks/useServerFormState";
-import { useToast } from "@/hooks/useToast";
-import { TState } from "@/types/general/server";
-import { registerSchema } from "@/schemas/auth/registerSchema";
-import { RegisterFormValues } from "@/types/auth/client";
-import { REGISTRATION_DEFAULT_VALUES } from "@/constants/auth/client";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { LoadingButton } from '@/components/ui/custom/loading-button';
+import { getFormSettings } from '@/utils/yup/client';
+import { objectToFormData } from '@/utils/general/client';
+import { registerAction } from '@/actions/auth/register/register';
+import { useServerFormState } from '@/hooks/useServerFormState';
+import { useToast } from '@/hooks/useToast';
+import { TState } from '@/types/general/server';
+import { registerSchema } from '@/schemas/auth/registerSchema';
+import { RegisterFormValues } from '@/types/auth/client';
+import {
+  AUTH_BUTTON_LABELS,
+  REGISTRATION_DEFAULT_VALUES,
+  AUTH_INPUT_PLACEHOLDERS,
+  AUTH_FIELDS,
+} from '@/constants/auth/client';
 
 const RegisterForm = () => {
   const [state, action] = useActionState<TState, FormData>(
@@ -57,12 +62,16 @@ const RegisterForm = () => {
       >
         <FormField
           control={form.control}
-          name="username"
+          name={AUTH_FIELDS.username as keyof RegisterFormValues}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Username" id="username" {...field} />
+                <Input
+                  placeholder={AUTH_INPUT_PLACEHOLDERS.username}
+                  id={AUTH_FIELDS.username}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,12 +79,16 @@ const RegisterForm = () => {
         />
         <FormField
           control={form.control}
-          name="email"
+          name={AUTH_FIELDS.email as keyof RegisterFormValues}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" id="email" {...field} />
+                <Input
+                  placeholder={AUTH_INPUT_PLACEHOLDERS.email}
+                  id={AUTH_FIELDS.email}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,14 +96,14 @@ const RegisterForm = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name={AUTH_FIELDS.password as keyof RegisterFormValues}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Password"
-                  id="password"
+                  placeholder={AUTH_INPUT_PLACEHOLDERS.password}
+                  id={AUTH_FIELDS.password}
                   type="password"
                   {...field}
                 />
@@ -101,14 +114,14 @@ const RegisterForm = () => {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name={AUTH_FIELDS.confirmPassword as keyof RegisterFormValues}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Confirm Password"
-                  id="confirmPassword"
+                  placeholder={AUTH_INPUT_PLACEHOLDERS.confirmPassword}
+                  id={AUTH_FIELDS.confirmPassword}
                   type="password"
                   {...field}
                 />
@@ -119,7 +132,7 @@ const RegisterForm = () => {
         />
         <Separator />
         <LoadingButton loading={isPending} type="submit">
-          Register
+          {AUTH_BUTTON_LABELS.register}
         </LoadingButton>
       </form>
     </Form>
