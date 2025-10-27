@@ -1,10 +1,10 @@
-import { compare, hash } from "bcryptjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { SignJWT, jwtVerify } from "jose";
-import { ROUTE } from "@/types/general/client";
-import { COOKIE_NAME } from "@/constants/general";
-import { ISession, SessionPayload } from "@/types/auth/server";
+import { compare, hash } from 'bcryptjs';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { SignJWT, jwtVerify } from 'jose';
+import { ROUTE } from '@/types/general/client';
+import { COOKIE_NAME } from '@/constants/general';
+import { ISession, SessionPayload } from '@/types/auth/server';
 
 const secretKey = process.env.SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -23,16 +23,16 @@ export const verifyPassword = async (
 
 export const encrypt = (payload: SessionPayload) => {
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
+    .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime("1hr")
+    .setExpirationTime('1hr')
     .sign(key);
 };
 
-export const decrypt = async (session: string | undefined = "") => {
+export const decrypt = async (session: string | undefined = '') => {
   try {
     const { payload } = await jwtVerify(session, key, {
-      algorithms: ["HS256"],
+      algorithms: ['HS256'],
     });
     return payload;
   } catch (_error) {
@@ -48,7 +48,7 @@ export const createSession = async (userId: string) => {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: "lax",
+    sameSite: 'lax',
     path: ROUTE.HOME,
   });
 };
@@ -68,17 +68,17 @@ export const verifySession = async (): Promise<ISession> => {
 export const updateSession = async () => {
   const session = (await cookies()).get(COOKIE_NAME)?.value;
   const payload = await decrypt(session);
+  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   if (!session || !payload) {
     return null;
   }
 
-  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   (await cookies()).set(COOKIE_NAME, session, {
     httpOnly: true,
     secure: true,
     expires: expires,
-    sameSite: "lax",
+    sameSite: 'lax',
     path: ROUTE.HOME,
   });
 
