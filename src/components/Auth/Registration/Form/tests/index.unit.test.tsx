@@ -31,9 +31,9 @@ describe('RegisterForm - Unit Tests', () => {
       passwordInput,
       confirmPasswordInput,
       submitButton,
-    } = getFormElements();
+    } = getFormElements('register');
     const { usernameLabel, emailLabel, passwordLabel, confirmPasswordLabel } =
-      getFormLabels();
+      getFormLabels('register');
 
     // Check form labels
     expect(usernameLabel).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('RegisterForm - Unit Tests', () => {
   it('has correct input types', () => {
     render(<RegisterForm />);
 
-    const { passwordInput, confirmPasswordInput } = getFormElements();
+    const { passwordInput, confirmPasswordInput } = getFormElements('register');
 
     expect(passwordInput.getAttribute('type')).toBe('password');
     expect(confirmPasswordInput.getAttribute('type')).toBe('password');
@@ -78,7 +78,7 @@ describe('RegisterForm - Unit Tests', () => {
       passwordInput,
       confirmPasswordInput,
       submitButton,
-    } = getFormElements();
+    } = getFormElements('register');
 
     fireEvent.change(usernameInput, {
       target: { value: 'testuser' },

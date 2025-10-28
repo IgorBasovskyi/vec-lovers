@@ -31,7 +31,7 @@ export const AUTH_FIELDS: RegisterFormValues = {
 
 export const AUTH_BUTTON_LABELS = {
   register: 'Register',
-  login: 'Login',
+  login: 'Log In',
 };
 
 export const AUTH_VALIDATION_ERRORS = {

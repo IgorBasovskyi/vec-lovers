@@ -4,4 +4,7 @@ export const AUTH_SERVER_ERRORS = {
   usernameAlreadyExists: 'Username already exists',
   emailAlreadyExists: 'Email already exists',
   databaseConnectionFailed: 'Database connection failed',
+  invalidEmailOrPassword: 'Invalid email or password',
+  sessionCreationFailed: 'Session creation failed',
+  passwordVerificationFailed: 'Password verification failed',
 };
