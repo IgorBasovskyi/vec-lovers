@@ -58,7 +58,7 @@ describe('RegisterForm - Integration Tests', () => {
     const user = userEvent.setup();
     render(<RegisterForm />);
 
-    const { submitButton } = getFormElements();
+    const { submitButton } = getFormElements('register');
 
     // Try to submit empty form
     await user.click(submitButton);
@@ -84,10 +84,10 @@ describe('RegisterForm - Integration Tests', () => {
     const user = userEvent.setup();
     render(<RegisterForm />);
 
-    const { submitButton } = getFormElements();
+    const { submitButton } = getFormElements('register');
 
     // Fill form with mismatched passwords
-    await clearAndFillForm(user, MISMATCHED_PASSWORD_DATA);
+    await clearAndFillForm(user, 'register', MISMATCHED_PASSWORD_DATA);
 
     await user.click(submitButton);
 
@@ -103,10 +103,10 @@ describe('RegisterForm - Integration Tests', () => {
     const user = userEvent.setup();
     render(<RegisterForm />);
 
-    const { submitButton } = getFormElements();
+    const { submitButton } = getFormElements('register');
 
     // Fill form with invalid email
-    await clearAndFillForm(user, INVALID_EMAIL_DATA);
+    await clearAndFillForm(user, 'register', INVALID_EMAIL_DATA);
 
     await user.click(submitButton);
 
@@ -122,10 +122,10 @@ describe('RegisterForm - Integration Tests', () => {
     const user = userEvent.setup();
     render(<RegisterForm />);
 
-    const { submitButton } = getFormElements();
+    const { submitButton } = getFormElements('register');
 
     // Fill form with username too short
-    await clearAndFillForm(user, INVALID_USERNAME_DATA);
+    await clearAndFillForm(user, 'register', INVALID_USERNAME_DATA);
 
     await user.click(submitButton);
 
@@ -141,10 +141,10 @@ describe('RegisterForm - Integration Tests', () => {
     const user = userEvent.setup();
     render(<RegisterForm />);
 
-    const { submitButton } = getFormElements();
+    const { submitButton } = getFormElements('register');
 
     // Fill form with password too short
-    await clearAndFillForm(user, INVALID_PASSWORD_DATA);
+    await clearAndFillForm(user, 'register', INVALID_PASSWORD_DATA);
 
     await user.click(submitButton);
 

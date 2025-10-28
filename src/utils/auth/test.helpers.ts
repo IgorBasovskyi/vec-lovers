@@ -5,70 +5,110 @@ import {
 import { screen } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event';
 
-// Helper functions for RegisterForm tests only
-export const getFormElements = () => ({
-  usernameInput: screen.getByPlaceholderText(AUTH_INPUT_PLACEHOLDERS.username),
-  emailInput: screen.getByPlaceholderText(AUTH_INPUT_PLACEHOLDERS.email),
-  passwordInput: screen.getByPlaceholderText(AUTH_INPUT_PLACEHOLDERS.password),
-  confirmPasswordInput: screen.getByPlaceholderText(
-    AUTH_INPUT_PLACEHOLDERS.confirmPassword
-  ),
-  submitButton: screen.getByRole('button', {
-    name: AUTH_BUTTON_LABELS.register,
-  }),
-});
+// ---- Types ----
+export type FormType = 'register' | 'login';
 
-export const getFormLabels = () => ({
-  usernameLabel: screen.getByText(AUTH_INPUT_PLACEHOLDERS.username),
-  emailLabel: screen.getByText(AUTH_INPUT_PLACEHOLDERS.email),
-  passwordLabel: screen.getByText(AUTH_INPUT_PLACEHOLDERS.password),
-  confirmPasswordLabel: screen.getByText(
-    AUTH_INPUT_PLACEHOLDERS.confirmPassword
-  ),
-});
+// ---- Configuration ----
+const FORM_CONFIG = {
+  register: {
+    fields: ['username', 'email', 'password', 'confirmPassword'] as const,
+    buttonLabel: AUTH_BUTTON_LABELS.register,
+  },
+  login: {
+    fields: ['email', 'password'] as const,
+    buttonLabel: AUTH_BUTTON_LABELS.login,
+  },
+} as const satisfies Record<
+  FormType,
+  { fields: readonly string[]; buttonLabel: string }
+>;
 
-export const checkValidationError = (errorText: string) => {
-  return screen.getByText(errorText);
+// ---- Universal selectors ----
+export const getFormElements = (type: FormType) => {
+  const config = FORM_CONFIG[type];
+  if (!config) {
+    throw new Error(`Unknown form type: ${type}`);
+  }
+
+  const { fields, buttonLabel } = config;
+  const elements: Record<string, HTMLInputElement> = {};
+
+  for (const field of fields) {
+    elements[`${field}Input`] = screen.getByPlaceholderText(
+      AUTH_INPUT_PLACEHOLDERS[field as keyof typeof AUTH_INPUT_PLACEHOLDERS]
+    );
+  }
+
+  elements.submitButton = screen.getByRole('button', { name: buttonLabel });
+
+  return elements;
 };
 
-// Helper to fill form with valid data
-export const fillFormWithValidData = async (user: UserEvent): Promise<void> => {
-  const { usernameInput, emailInput, passwordInput, confirmPasswordInput } =
-    getFormElements();
+export const getFormLabels = (type: FormType) => {
+  const config = FORM_CONFIG[type];
+  if (!config) {
+    throw new Error(`Unknown form type: ${type}`);
+  }
 
-  await user.type(usernameInput, 'testuser');
-  await user.type(emailInput, 'test@example.com');
-  await user.type(passwordInput, 'password123');
-  await user.type(confirmPasswordInput, 'password123');
+  const { fields } = config;
+  const labels: Record<string, HTMLInputElement> = {};
+
+  for (const field of fields) {
+    labels[`${field}Label`] = screen.getByText(
+      AUTH_INPUT_PLACEHOLDERS[field as keyof typeof AUTH_INPUT_PLACEHOLDERS]
+    );
+  }
+
+  return labels;
 };
 
-// Helper to clear and fill form fields
+// ---- Validation error checking ----
+export const checkValidationError = (errorText: string) =>
+  screen.getByText(errorText);
+
+// ---- Заповнення форм ----
+export const fillForm = async (
+  user: UserEvent,
+  type: FormType,
+  data: Record<string, string>
+): Promise<void> => {
+  const elements = getFormElements(type);
+
+  for (const [field, value] of Object.entries(data)) {
+    const input = elements[`${field}Input`];
+    if (input) await user.type(input, value);
+  }
+};
+
 export const clearAndFillForm = async (
   user: UserEvent,
-  data: {
-    username?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-  }
+  type: FormType,
+  data: Record<string, string>
 ): Promise<void> => {
-  const { usernameInput, emailInput, passwordInput, confirmPasswordInput } =
-    getFormElements();
+  const elements = getFormElements(type);
 
-  if (data.username !== undefined) {
-    await user.clear(usernameInput);
-    await user.type(usernameInput, data.username);
-  }
-  if (data.email !== undefined) {
-    await user.clear(emailInput);
-    await user.type(emailInput, data.email);
-  }
-  if (data.password !== undefined) {
-    await user.clear(passwordInput);
-    await user.type(passwordInput, data.password);
-  }
-  if (data.confirmPassword !== undefined) {
-    await user.clear(confirmPasswordInput);
-    await user.type(confirmPasswordInput, data.confirmPassword);
+  for (const [field, value] of Object.entries(data)) {
+    const input = elements[`${field}Input`];
+    if (input) {
+      await user.clear(input);
+      await user.type(input, value);
+    }
   }
 };
+
+// ---- Valid data presets ----
+export const fillFormWithValidData = async (user: UserEvent): Promise<void> =>
+  fillForm(user, 'register', {
+    username: 'testuser',
+    email: 'test@example.com',
+    password: 'password123',
+    confirmPassword: 'password123',
+  });
+
+export const fillLoginFormWithValidData = async (
+  user: UserEvent
+): Promise<void> =>
+  fillForm(user, 'login', {
+    email: 'test@example.com',
+    password: 'password123',
+  });
