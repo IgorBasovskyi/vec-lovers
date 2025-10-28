@@ -1,5 +1,5 @@
-import { TIconSVG } from "@/types/icon/general";
-import { sanitizeSVG } from "@/utils/sanitize";
+import { TIconSVG } from '@/types/icon/general';
+import { sanitizeSVG } from '@/utils/sanitize';
 
 interface IconProps {
   svgIcon: TIconSVG;

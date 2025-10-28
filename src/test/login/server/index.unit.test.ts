@@ -3,7 +3,7 @@ import * as general from '@/utils/general/server';
 import { getFormFields } from '@/utils/general';
 import type { TState } from '@/types/general/server';
 import { IValidationError } from '@/types/general/server';
-import { loginAction } from './login';
+import { loginAction } from '@/actions/auth/login/login';
 import prisma from '@/utils/prisma';
 import { ROUTE } from '@/types/general/client';
 import { redirect } from 'next/navigation';
