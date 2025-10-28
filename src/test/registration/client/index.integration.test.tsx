@@ -6,7 +6,7 @@ import {
   getFormElements,
   checkValidationError,
   clearAndFillForm,
-} from '@/utils/auth/test.helpers';
+} from '@/test/test.helpers';
 import { AUTH_VALIDATION_ERRORS } from '@/constants/auth/client';
 
 // -------------------- Test Data --------------------

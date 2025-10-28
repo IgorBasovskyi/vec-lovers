@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import RegisterForm from '../index';
+import RegisterForm from '@/components/Auth/Registration/Form';
 import { useServerFormState } from '@/hooks/useServerFormState';
 import { useToast } from '@/hooks/useToast';
 import { registerAction } from '@/actions/auth/register/register';
-import { getFormElements, getFormLabels } from '@/utils/auth/test.helpers';
+import { getFormElements, getFormLabels } from '@/test/test.helpers';
 
 // Mocks
 vi.mock('next/navigation', () => ({
