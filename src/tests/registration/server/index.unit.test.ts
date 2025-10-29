@@ -10,7 +10,7 @@ import { Prisma } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { registerSchema } from '@/schemas/auth/registerSchema';
 import { AUTH_VALIDATION_ERRORS } from '@/constants/auth/client';
-import { AUTH_SERVER_ERRORS } from '@/constants/auth/server';
+import { SERVER_ERRORS } from '@/constants/auth/server';
 
 // -------------------- Test Data --------------------
 const DEFAULT_USER_DATA = {
@@ -47,7 +47,7 @@ vi.mock('@/utils/general/server', () => ({
   ),
   createServerError: vi.fn(() => ({
     type: 'error',
-    message: AUTH_SERVER_ERRORS.serverError,
+    message: SERVER_ERRORS.serverError,
   })),
   isValidationError: vi.fn(),
   handlePrismaError: vi.fn(),
@@ -129,7 +129,7 @@ const mockUserCreation = (userData: {
 
 const mockPrismaUniqueError = (field: string) => {
   const error = new Prisma.PrismaClientKnownRequestError(
-    AUTH_SERVER_ERRORS.uniqueConstraintError,
+    SERVER_ERRORS.uniqueConstraintError,
     {
       code: 'P2002',
       clientVersion: '5.0.0',
@@ -178,7 +178,7 @@ describe('registerAction', () => {
     mockPrismaUniqueError('User_email_key');
     (general.handlePrismaError as unknown as Mock).mockReturnValue({
       type: 'validation',
-      fields: { email: AUTH_SERVER_ERRORS.emailAlreadyExists },
+      fields: { email: SERVER_ERRORS.emailAlreadyExists },
     });
 
     // Act
@@ -187,7 +187,7 @@ describe('registerAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'validation',
-      fields: { email: AUTH_SERVER_ERRORS.emailAlreadyExists },
+      fields: { email: SERVER_ERRORS.emailAlreadyExists },
     });
     expect(general.handlePrismaError).toHaveBeenCalledWith(
       expect.any(Prisma.PrismaClientKnownRequestError),
@@ -205,7 +205,7 @@ describe('registerAction', () => {
     mockPrismaUniqueError('User_username_key');
     (general.handlePrismaError as unknown as Mock).mockReturnValue({
       type: 'validation',
-      fields: { username: AUTH_SERVER_ERRORS.usernameAlreadyExists },
+      fields: { username: SERVER_ERRORS.usernameAlreadyExists },
     });
 
     // Act
@@ -214,7 +214,7 @@ describe('registerAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'validation',
-      fields: { username: AUTH_SERVER_ERRORS.usernameAlreadyExists },
+      fields: { username: SERVER_ERRORS.usernameAlreadyExists },
     });
     expect(general.handlePrismaError).toHaveBeenCalledWith(
       expect.any(Prisma.PrismaClientKnownRequestError),
@@ -261,7 +261,7 @@ describe('registerAction', () => {
     (hashPassword as unknown as Mock).mockResolvedValue('hashedpassword123');
 
     const prismaError = new Prisma.PrismaClientKnownRequestError(
-      AUTH_SERVER_ERRORS.databaseConnectionFailed,
+      SERVER_ERRORS.databaseConnectionFailed,
       {
         code: 'P1001',
         clientVersion: '5.0.0',
@@ -270,7 +270,7 @@ describe('registerAction', () => {
     (prisma.user.create as unknown as Mock).mockRejectedValue(prismaError);
     (general.handlePrismaError as unknown as Mock).mockReturnValue({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.serverError,
+      message: SERVER_ERRORS.serverError,
     });
 
     // Act
@@ -279,7 +279,7 @@ describe('registerAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.serverError,
+      message: SERVER_ERRORS.serverError,
     });
     expect(general.handlePrismaError).toHaveBeenCalledWith(prismaError, {
       User_email_key: 'email',
@@ -300,7 +300,7 @@ describe('registerAction', () => {
     );
     (general.handlePrismaError as unknown as Mock).mockReturnValue({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.serverError,
+      message: SERVER_ERRORS.serverError,
     });
 
     // Act
@@ -309,7 +309,7 @@ describe('registerAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.serverError,
+      message: SERVER_ERRORS.serverError,
     });
     expect(general.handlePrismaError).toHaveBeenCalledWith(expect.any(Error), {
       User_email_key: 'email',

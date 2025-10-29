@@ -1,4 +1,4 @@
-export const AUTH_SERVER_ERRORS = {
+export const SERVER_ERRORS = {
   serverError: 'Server error. Please try again later.',
   uniqueConstraintError: 'Unique constraint failed',
   usernameAlreadyExists: 'Username already exists',

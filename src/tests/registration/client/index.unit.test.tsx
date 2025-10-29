@@ -4,7 +4,7 @@ import RegisterForm from '@/components/Auth/Registration/Form';
 import { useServerFormState } from '@/hooks/useServerFormState';
 import { useToast } from '@/hooks/useToast';
 import { registerAction } from '@/actions/auth/register/register';
-import { getFormElements, getFormLabels } from '@/test/test.helpers';
+import { getFormElements, getFormLabels } from '@/tests/test.helpers';
 
 // Mocks
 vi.mock('next/navigation', () => ({
