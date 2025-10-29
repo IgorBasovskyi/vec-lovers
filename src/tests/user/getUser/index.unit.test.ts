@@ -1,19 +1,15 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { getUser } from '@/actions/user/getUser';
-import prisma from '@/utils/prisma';
 import { createServerError } from '@/utils/general/server';
 import { SERVER_ERRORS } from '@/constants/auth/server';
 
-// -------------------- Test Data --------------------
+// Test data
+import { MOCK_USER_PARTIAL } from '../../testData/auth';
 
-const MOCK_USER = {
-  id: '1',
-  username: 'testuser',
-  email: 'test@example.com',
-} as const;
+// Mock helpers
+import { mockServerError } from '../../mockHelpers/server';
 
 // -------------------- Mocks --------------------
-
 vi.mock('@/utils/prisma', () => ({
   default: {
     user: {
@@ -37,30 +33,24 @@ vi.mock('@/utils/auth/withSession', () => ({
 }));
 
 // -------------------- Test Helpers --------------------
-
-const mockUserFound = (user: typeof MOCK_USER) => {
+const mockUserFound = async (user: typeof MOCK_USER_PARTIAL) => {
+  const { default: prisma } = await import('@/utils/prisma');
   (prisma.user.findUnique as unknown as Mock).mockResolvedValue(user);
 };
 
-const mockUserNotFound = () => {
+const mockUserNotFound = async () => {
+  const { default: prisma } = await import('@/utils/prisma');
   (prisma.user.findUnique as unknown as Mock).mockResolvedValue(null);
 };
 
-const mockDatabaseError = () => {
+const mockDatabaseError = async () => {
+  const { default: prisma } = await import('@/utils/prisma');
   (prisma.user.findUnique as unknown as Mock).mockRejectedValue(
     new Error(SERVER_ERRORS.databaseConnectionFailed)
   );
 };
 
-const mockServerError = (message?: string) => {
-  (createServerError as unknown as Mock).mockReturnValue({
-    type: 'error',
-    message: message || SERVER_ERRORS.serverError,
-  });
-};
-
 // -------------------- Tests --------------------
-
 describe('getUser', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -68,13 +58,14 @@ describe('getUser', () => {
 
   it('should return user data when user is found', async () => {
     // Arrange
-    mockUserFound(MOCK_USER);
+    await mockUserFound(MOCK_USER_PARTIAL);
 
     // Act
     const result = await getUser();
 
     // Assert
-    expect(result).toEqual(MOCK_USER);
+    expect(result).toEqual(MOCK_USER_PARTIAL);
+    const { default: prisma } = await import('@/utils/prisma');
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { id: expect.any(String) },
       select: { id: true, username: true, email: true },
@@ -83,7 +74,7 @@ describe('getUser', () => {
 
   it('should return server error when user is not found in database', async () => {
     // Arrange
-    mockUserNotFound();
+    await mockUserNotFound();
     mockServerError('User not found');
 
     // Act
@@ -99,7 +90,7 @@ describe('getUser', () => {
 
   it('should return server error when database query fails', async () => {
     // Arrange
-    mockDatabaseError();
+    await mockDatabaseError();
     mockServerError();
 
     // Act

@@ -1,24 +1,25 @@
-import * as yup from "yup";
+import * as yup from 'yup';
+import { ICON_VALIDATION_ERRORS } from '@/constants/icon/client';
 
 export const addIconSchema = yup.object({
   title: yup
     .string()
-    .min(1, "Title is required.")
-    .max(100, "Title should not contain more than 100 characters.")
-    .required("Title is required."),
+    .min(1, ICON_VALIDATION_ERRORS.title.minLength)
+    .max(100, ICON_VALIDATION_ERRORS.title.maxLength)
+    .required(ICON_VALIDATION_ERRORS.title.required),
 
   description: yup
     .string()
-    .max(500, "Description should not contain more than 500 characters.")
+    .max(500, ICON_VALIDATION_ERRORS.description.maxLength)
     .optional(),
 
   svgIcon: yup
     .string()
-    .min(1, "SVG icon is required.")
-    .required("SVG icon is required."),
+    .min(1, ICON_VALIDATION_ERRORS.svgIcon.minLength)
+    .required(ICON_VALIDATION_ERRORS.svgIcon.required),
 
   category: yup
     .string()
-    .max(50, "Category should not contain more than 50 characters.")
+    .max(50, ICON_VALIDATION_ERRORS.category.maxLength)
     .optional(),
 });
