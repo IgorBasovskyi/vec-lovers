@@ -8,7 +8,7 @@ import prisma from '@/utils/prisma';
 import { ROUTE } from '@/types/general/client';
 import { redirect } from 'next/navigation';
 import { createSession, verifyPassword } from '@/utils/auth/server';
-import { AUTH_SERVER_ERRORS } from '@/constants/auth/server';
+import { SERVER_ERRORS } from '@/constants/auth/server';
 import { loginSchema } from '@/schemas/auth/loginSchema';
 import { AUTH_VALIDATION_ERRORS } from '@/constants/auth/client';
 
@@ -61,7 +61,7 @@ vi.mock('@/utils/general/server', () => ({
   ),
   createServerError: vi.fn((message?: string) => ({
     type: 'error',
-    message: message || AUTH_SERVER_ERRORS.serverError,
+    message: message || SERVER_ERRORS.serverError,
   })),
   isValidationError: vi.fn(),
 }));
@@ -171,7 +171,7 @@ describe('loginAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.serverError,
+      message: SERVER_ERRORS.serverError,
     });
     expect(general.createServerError).toHaveBeenCalledWith();
   });
@@ -188,10 +188,10 @@ describe('loginAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.invalidEmailOrPassword,
+      message: SERVER_ERRORS.invalidEmailOrPassword,
     });
     expect(general.createServerError).toHaveBeenCalledWith(
-      AUTH_SERVER_ERRORS.invalidEmailOrPassword
+      SERVER_ERRORS.invalidEmailOrPassword
     );
     expect(prisma.user.findFirst).toHaveBeenCalledWith({
       where: { email: NON_EXISTENT_USER_DATA.email.toLowerCase() },
@@ -211,10 +211,10 @@ describe('loginAction', () => {
     // Assert
     expect(result).toEqual({
       type: 'error',
-      message: AUTH_SERVER_ERRORS.invalidEmailOrPassword,
+      message: SERVER_ERRORS.invalidEmailOrPassword,
     });
     expect(general.createServerError).toHaveBeenCalledWith(
-      AUTH_SERVER_ERRORS.invalidEmailOrPassword
+      SERVER_ERRORS.invalidEmailOrPassword
     );
     expect(prisma.user.findFirst).toHaveBeenCalledWith({
       where: { email: EXISTING_USER_WRONG_PASSWORD.email.toLowerCase() },
@@ -275,12 +275,12 @@ describe('loginAction', () => {
     mockGetFormFields(VALID_LOGIN_DATA);
     setupSuccessfulValidation(VALID_LOGIN_DATA);
     (prisma.user.findFirst as unknown as Mock).mockRejectedValue(
-      new Error(AUTH_SERVER_ERRORS.databaseConnectionFailed)
+      new Error(SERVER_ERRORS.databaseConnectionFailed)
     );
 
     // Act & Assert
     await expect(loginAction(null, mockFormData)).rejects.toThrow(
-      AUTH_SERVER_ERRORS.databaseConnectionFailed
+      SERVER_ERRORS.databaseConnectionFailed
     );
   });
 
@@ -290,12 +290,12 @@ describe('loginAction', () => {
     setupSuccessfulValidation(VALID_LOGIN_DATA);
     mockUserFound(MOCK_USER);
     (verifyPassword as unknown as Mock).mockRejectedValue(
-      new Error(AUTH_SERVER_ERRORS.passwordVerificationFailed)
+      new Error(SERVER_ERRORS.passwordVerificationFailed)
     );
 
     // Act & Assert
     await expect(loginAction(null, mockFormData)).rejects.toThrow(
-      AUTH_SERVER_ERRORS.passwordVerificationFailed
+      SERVER_ERRORS.passwordVerificationFailed
     );
   });
 
@@ -306,12 +306,12 @@ describe('loginAction', () => {
     mockUserFound(MOCK_USER);
     mockPasswordVerification(true);
     (createSession as unknown as Mock).mockRejectedValue(
-      new Error(AUTH_SERVER_ERRORS.sessionCreationFailed)
+      new Error(SERVER_ERRORS.sessionCreationFailed)
     );
 
     // Act & Assert
     await expect(loginAction(null, mockFormData)).rejects.toThrow(
-      AUTH_SERVER_ERRORS.sessionCreationFailed
+      SERVER_ERRORS.sessionCreationFailed
     );
   });
 });

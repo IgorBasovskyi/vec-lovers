@@ -4,7 +4,7 @@ import LoginForm from '@/components/Auth/Login/Form';
 import { useServerFormState } from '@/hooks/useServerFormState';
 import { useToast } from '@/hooks/useToast';
 import { loginAction } from '@/actions/auth/login/login';
-import { getFormElements, getFormLabels } from '@/test/test.helpers';
+import { getFormElements, getFormLabels } from '@/tests/test.helpers';
 
 // ===== Mocks =====
 vi.mock('next/navigation', () => ({

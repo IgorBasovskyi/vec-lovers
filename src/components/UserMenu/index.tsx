@@ -1,20 +1,20 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import Logout from "../Auth/Logout";
-import { Button } from "../ui/button";
-import { getUser } from "@/actions/user/getUser";
-import { IServerError } from "@/types/general/server";
-import { IUser } from "@/types/user/general";
+} from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
+import Logout from '../Auth/Logout';
+import { Button } from '../ui/button';
+import { getUser } from '@/actions/user/getUser';
+import { IServerError } from '@/types/general/server';
+import { IUser } from '@/types/user/general';
 
 const UserMenu = async () => {
   const response: IUser | IServerError = await getUser();
-  const user = "username" in response ? response : null;
+  const user = 'username' in response ? response : null;
 
   return (
     <DropdownMenu>
@@ -23,11 +23,11 @@ const UserMenu = async () => {
           variant="outline"
           size="icon"
           className="rounded-full"
-          title={user ? user.username : "Failed to load user"}
+          title={user ? user.username : 'Failed to load user'}
         >
           <Avatar className="w-full h-full">
             <AvatarFallback>
-              {user ? user.username[0].toUpperCase() : "U"}
+              {user && user.username ? user.username[0].toUpperCase() : 'U'}
             </AvatarFallback>
           </Avatar>
         </Button>
